@@ -11,7 +11,7 @@ import { fetchCoupons, fetchFeaturedProducts, fetchLatestProducts, fetchStores }
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 
 export const Route = createFileRoute("/")({
-  head: () => ({ meta: [{ title: "Ofertas Mundo — as melhores ofertas num só lugar" }, { name: "description", content: "Ofertas, cupões e preços comparados das melhores lojas online." }] }),
+  head: () => ({ meta: [{ title: "OfertaPerfeita — as melhores ofertas num só lugar" }, { name: "description", content: "Descubra ofertas verificadas, cupões ativos e preços comparados das melhores lojas online." }, { property: "og:title", content: "OfertaPerfeita — ofertas e cupões curados" }, { property: "og:description", content: "Descubra ofertas verificadas, cupões ativos e preços comparados das melhores lojas online." }] }),
   component: HomePage,
 });
 

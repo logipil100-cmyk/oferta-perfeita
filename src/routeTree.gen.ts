@@ -20,6 +20,7 @@ import { Route as PrivacidadeRouteImport } from './routes/privacidade'
 import { Route as SobreRouteImport } from './routes/sobre'
 import { Route as TermosRouteImport } from './routes/termos'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminConfiguracoesRouteImport } from './routes/admin.configuracoes'
 import { Route as AdminCupoesRouteImport } from './routes/admin.cupoes'
 import { Route as AdminLojasRouteImport } from './routes/admin.lojas'
 import { Route as AdminProdutosRouteImport } from './routes/admin.produtos'
@@ -85,6 +86,11 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   path: '/admin/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminConfiguracoesRoute = AdminConfiguracoesRouteImport.update({
+  id: '/admin/configuracoes',
+  path: '/admin/configuracoes',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminCupoesRoute = AdminCupoesRouteImport.update({
   id: '/admin/cupoes',
   path: '/admin/cupoes',
@@ -142,6 +148,7 @@ export interface FileRoutesByFullPath {
   '/privacidade': typeof PrivacidadeRoute
   '/sobre': typeof SobreRoute
   '/termos': typeof TermosRoute
+  '/admin/configuracoes': typeof AdminConfiguracoesRoute
   '/admin/cupoes': typeof AdminCupoesRoute
   '/admin/lojas': typeof AdminLojasRoute
   '/admin/produtos': typeof AdminProdutosRoute
@@ -164,6 +171,7 @@ export interface FileRoutesByTo {
   '/privacidade': typeof PrivacidadeRoute
   '/sobre': typeof SobreRoute
   '/termos': typeof TermosRoute
+  '/admin/configuracoes': typeof AdminConfiguracoesRoute
   '/admin/cupoes': typeof AdminCupoesRoute
   '/admin/lojas': typeof AdminLojasRoute
   '/admin/produtos': typeof AdminProdutosRoute
@@ -187,6 +195,7 @@ export interface FileRoutesById {
   '/privacidade': typeof PrivacidadeRoute
   '/sobre': typeof SobreRoute
   '/termos': typeof TermosRoute
+  '/admin/configuracoes': typeof AdminConfiguracoesRoute
   '/admin/cupoes': typeof AdminCupoesRoute
   '/admin/lojas': typeof AdminLojasRoute
   '/admin/produtos': typeof AdminProdutosRoute
@@ -211,6 +220,7 @@ export interface FileRouteTypes {
     | '/privacidade'
     | '/sobre'
     | '/termos'
+    | '/admin/configuracoes'
     | '/admin/cupoes'
     | '/admin/lojas'
     | '/admin/produtos'
@@ -233,6 +243,7 @@ export interface FileRouteTypes {
     | '/privacidade'
     | '/sobre'
     | '/termos'
+    | '/admin/configuracoes'
     | '/admin/cupoes'
     | '/admin/lojas'
     | '/admin/produtos'
@@ -255,6 +266,7 @@ export interface FileRouteTypes {
     | '/privacidade'
     | '/sobre'
     | '/termos'
+    | '/admin/configuracoes'
     | '/admin/cupoes'
     | '/admin/lojas'
     | '/admin/produtos'
@@ -278,6 +290,7 @@ export interface RootRouteChildren {
   PrivacidadeRoute: typeof PrivacidadeRoute
   SobreRoute: typeof SobreRoute
   TermosRoute: typeof TermosRoute
+  AdminConfiguracoesRoute: typeof AdminConfiguracoesRoute
   AdminCupoesRoute: typeof AdminCupoesRoute
   AdminLojasRoute: typeof AdminLojasRoute
   AdminProdutosRoute: typeof AdminProdutosRoute
@@ -369,6 +382,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/configuracoes': {
+      id: '/admin/configuracoes'
+      path: '/admin/configuracoes'
+      fullPath: '/admin/configuracoes'
+      preLoaderRoute: typeof AdminConfiguracoesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/cupoes': {
       id: '/admin/cupoes'
       path: '/admin/cupoes'
@@ -446,6 +466,7 @@ const rootRouteChildren: RootRouteChildren = {
   PrivacidadeRoute: PrivacidadeRoute,
   SobreRoute: SobreRoute,
   TermosRoute: TermosRoute,
+  AdminConfiguracoesRoute: AdminConfiguracoesRoute,
   AdminCupoesRoute: AdminCupoesRoute,
   AdminLojasRoute: AdminLojasRoute,
   AdminProdutosRoute: AdminProdutosRoute,
