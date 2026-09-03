@@ -34,24 +34,58 @@ function AuthPage() {
     if (user) void navigate({ to: "/conta" });
   }, [user, navigate]);
 
+  const authErrorMessage = (error: unknown) => {
+    const message = error instanceof Error ? error.message.toLowerCase() : "";
+    if (message.includes("invalid login credentials") || message.includes("invalid credentials")) {
+      return "Email ou palavra-passe inválidos.";
+    }
+    if (message.includes("email not confirmed")) {
+      return "Confirme o seu email antes de iniciar sessão.";
+    }
+    if (message.includes("already registered") || message.includes("user already registered")) {
+      return "Este email já está registado. Tente iniciar sessão.";
+    }
+    if (message.includes("invalid email") || message.includes("email_address_invalid")) {
+      return "Introduza um email válido.";
+    }
+    if (message.includes("password") && (message.includes("weak") || message.includes("least"))) {
+      return "A palavra-passe deve ter pelo menos 6 caracteres.";
+    }
+    if (message.includes("rate limit") || message.includes("too many")) {
+      return "Demasiadas tentativas. Aguarde alguns minutos e tente novamente.";
+    }
+    if (message.includes("database") || message.includes("postgres") || message.includes("trigger")) {
+      return "Não foi possível concluir o cadastro devido a um erro de base de dados.";
+    }
+    return "Não foi possível autenticar. Tente novamente.";
+  };
+
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     setBusy(true);
     try {
       if (mode === "login") {
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
         if (error) throw error;
-      } else {
-        const { error } = await supabase.auth.signUp({
-          email,
-          password,
-          options: { emailRedirectTo: window.location.origin },
-        });
-        if (error) throw error;
-        toast.success("Conta criada. Verifique o seu email se for pedido.");
+        return;
       }
+
+      const { data, error } = await supabase.auth.signUp({
+        email: email.trim(),
+        password,
+        options: {
+          emailRedirectTo:
+            import.meta.env.NEXT_PUBLIC_DEV_SUPABASE_REDIRECT_URL ?? `${window.location.origin}/entrar`,
+        },
+      });
+      if (error) throw error;
+      toast.success(
+        data.session
+          ? "Conta criada com sucesso."
+          : "Conta criada. Verifique o seu email para confirmar a conta.",
+      );
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Não foi possível autenticar.");
+      toast.error(authErrorMessage(error));
     } finally {
       setBusy(false);
     }
