@@ -36,7 +36,11 @@ function FavoritesPage() {
         <EmptyState
           title="Inicie sessão para ver favoritos"
           description="Guarde ofertas e encontre-as aqui em qualquer dispositivo."
-          action={<Button asChild><Link to="/entrar">Entrar</Link></Button>}
+          action={
+            <Button asChild>
+              <Link to="/entrar">Entrar</Link>
+            </Button>
+          }
         />
       </div>
     );
@@ -49,11 +53,19 @@ function FavoritesPage() {
         {favorites.isPending ? (
           <CardGridSkeleton count={4} />
         ) : (favorites.data ?? []).length === 0 ? (
-          <EmptyState title="Ainda não guardou ofertas" description="Toque no coração numa oferta para a guardar." />
+          <EmptyState
+            title="Ainda não guardou ofertas"
+            description="Toque no coração numa oferta para a guardar."
+          />
         ) : (
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {(favorites.data ?? []).map((p) => (
-              <ProductCard key={p.id} product={p} isFavorite={isFavorite(p.id)} onToggleFavorite={toggleFavorite} />
+              <ProductCard
+                key={p.id}
+                product={p}
+                isFavorite={isFavorite(p.id)}
+                onToggleFavorite={toggleFavorite}
+              />
             ))}
           </div>
         )}

@@ -11,7 +11,12 @@ export function StoreCard({ store }: { store: Store }) {
     >
       <div className="flex items-center gap-3">
         {store.logo_url ? (
-          <img src={store.logo_url} alt="" className="h-10 w-10 rounded-lg object-cover" loading="lazy" />
+          <img
+            src={store.logo_url}
+            alt=""
+            className="h-10 w-10 rounded-lg object-cover"
+            loading="lazy"
+          />
         ) : (
           <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-secondary font-display text-lg">
             {store.name.charAt(0)}

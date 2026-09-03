@@ -79,7 +79,10 @@ export function RecordDialog({
             const raw = values[f.name];
             if (f.type === "switch") {
               return (
-                <div key={f.name} className="flex items-center justify-between gap-4 rounded-xl border p-3">
+                <div
+                  key={f.name}
+                  className="flex items-center justify-between gap-4 rounded-xl border p-3"
+                >
                   <Label htmlFor={id}>{f.label}</Label>
                   <Switch id={id} checked={!!raw} onCheckedChange={(c) => set(f.name, c)} />
                 </div>

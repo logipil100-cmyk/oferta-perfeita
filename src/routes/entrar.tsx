@@ -11,7 +11,10 @@ export const Route = createFileRoute("/entrar")({
   head: () => ({
     meta: [
       { title: "Entrar — OfertaPerfeita" },
-      { name: "description", content: "Aceda à sua conta para guardar favoritos e criar alertas de preço." },
+      {
+        name: "description",
+        content: "Aceda à sua conta para guardar favoritos e criar alertas de preço.",
+      },
       { property: "og:title", content: "Entrar — OfertaPerfeita" },
       { property: "og:description", content: "Aceda à sua conta OfertaPerfeita." },
     ],
@@ -72,11 +75,24 @@ function AuthPage() {
       <form onSubmit={submit} className="mt-8 space-y-4">
         <div className="space-y-2">
           <Label htmlFor="email">Email</Label>
-          <Input id="email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
+          <Input
+            id="email"
+            type="email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
         </div>
         <div className="space-y-2">
           <Label htmlFor="password">Palavra-passe</Label>
-          <Input id="password" type="password" required minLength={6} value={password} onChange={(e) => setPassword(e.target.value)} />
+          <Input
+            id="password"
+            type="password"
+            required
+            minLength={6}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
         </div>
         <Button type="submit" className="w-full" disabled={busy}>
           {mode === "login" ? "Entrar" : "Criar conta"}

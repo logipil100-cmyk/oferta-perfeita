@@ -8,7 +8,10 @@ export const Route = createFileRoute("/cupoes/")({
   head: () => ({
     meta: [
       { title: "Cupões de desconto — OfertaPerfeita" },
-      { name: "description", content: "Códigos promocionais verificados, com condições e validade visíveis." },
+      {
+        name: "description",
+        content: "Códigos promocionais verificados, com condições e validade visíveis.",
+      },
       { property: "og:title", content: "Cupões de desconto — OfertaPerfeita" },
       { property: "og:description", content: "Copie códigos de desconto das lojas parceiras." },
     ],
@@ -31,7 +34,10 @@ function CouponsPage() {
         ) : coupons.isError ? (
           <ErrorState onRetry={() => void coupons.refetch()} />
         ) : coupons.data.length === 0 ? (
-          <EmptyState title="Sem cupões ativos" description="Novos códigos são publicados regularmente." />
+          <EmptyState
+            title="Sem cupões ativos"
+            description="Novos códigos são publicados regularmente."
+          />
         ) : (
           <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
             {coupons.data.map((c) => (

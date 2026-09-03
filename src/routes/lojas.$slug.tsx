@@ -36,7 +36,8 @@ function StorePage() {
 
   if (store.isPending) return <LoadingBlock />;
   if (store.isError) return <ErrorState onRetry={() => void store.refetch()} />;
-  if (!store.data) return <EmptyState title="Loja não encontrada" description="Esta loja não está disponível." />;
+  if (!store.data)
+    return <EmptyState title="Loja não encontrada" description="Esta loja não está disponível." />;
 
   const s = store.data;
   const url = safeAffiliateUrl(s.affiliate_url ?? s.website_url);
@@ -45,7 +46,9 @@ function StorePage() {
     <div className="container-page py-8">
       <header className="rounded-2xl border bg-card p-6 shadow-soft">
         <h1 className="text-3xl md:text-4xl">{s.name}</h1>
-        {s.description ? <p className="mt-2 max-w-2xl text-sm text-muted-foreground">{s.description}</p> : null}
+        {s.description ? (
+          <p className="mt-2 max-w-2xl text-sm text-muted-foreground">{s.description}</p>
+        ) : null}
         {url ? (
           <Button asChild className="mt-5">
             <a href={url} {...affiliateLinkProps}>
@@ -59,7 +62,9 @@ function StorePage() {
         <section className="mt-10">
           <h2 className="text-2xl">Cupões</h2>
           <div className="mt-5 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {(coupons.data ?? []).map((c) => <CouponCard key={c.id} coupon={c} />)}
+            {(coupons.data ?? []).map((c) => (
+              <CouponCard key={c.id} coupon={c} />
+            ))}
           </div>
         </section>
       ) : null}
@@ -68,10 +73,15 @@ function StorePage() {
         <h2 className="text-2xl">Ofertas</h2>
         <div className="mt-5">
           {(offers.data?.items ?? []).length === 0 ? (
-            <EmptyState title="Sem ofertas ativas" description="Volte em breve para novidades desta loja." />
+            <EmptyState
+              title="Sem ofertas ativas"
+              description="Volte em breve para novidades desta loja."
+            />
           ) : (
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-              {(offers.data?.items ?? []).map((p) => <ProductCard key={p.id} product={p} />)}
+              {(offers.data?.items ?? []).map((p) => (
+                <ProductCard key={p.id} product={p} />
+              ))}
             </div>
           )}
         </div>

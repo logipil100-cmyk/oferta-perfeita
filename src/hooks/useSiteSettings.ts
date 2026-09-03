@@ -9,7 +9,7 @@ export const settingsQuery = {
 
 export function useSiteSettings() {
   const { data } = useQuery(settingsQuery);
-  const get = <T,>(key: string, fallback: T): T => {
+  const get = <T>(key: string, fallback: T): T => {
     const value = data?.[key];
     return (value === undefined || value === null ? fallback : value) as T;
   };

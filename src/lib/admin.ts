@@ -83,7 +83,11 @@ export async function grantRole(userId: string, role: AppRole) {
 }
 
 export async function revokeRole(userId: string, role: AppRole) {
-  const { error } = await supabase.from("user_roles").delete().eq("user_id", userId).eq("role", role);
+  const { error } = await supabase
+    .from("user_roles")
+    .delete()
+    .eq("user_id", userId)
+    .eq("role", role);
   if (error) throw error;
 }
 

@@ -33,7 +33,12 @@ function AdminProdutos() {
 
   const fields: Field[] = [
     { name: "title", label: "Título", required: true },
-    { name: "slug", label: "Slug", required: true, help: "Identificador no URL, ex: portatil-14-polegadas" },
+    {
+      name: "slug",
+      label: "Slug",
+      required: true,
+      help: "Identificador no URL, ex: portatil-14-polegadas",
+    },
     { name: "price", label: "Preço", type: "number", required: true },
     { name: "old_price", label: "Preço anterior", type: "number" },
     { name: "currency", label: "Moeda", placeholder: "EUR" },
@@ -49,9 +54,23 @@ function AdminProdutos() {
       type: "select",
       options: (categories.data ?? []).map((c) => ({ value: c.slug, label: c.name })),
     },
-    { name: "affiliate_url", label: "Link de afiliado", required: true, help: "Deve começar por https://" },
-    { name: "image_url", label: "Imagem (URL)", help: "Opcional; o upload abaixo substitui este endereço." },
-    { name: "image_file", label: "Carregar imagem", type: "file", help: "JPG, PNG ou WebP até 5 MB." },
+    {
+      name: "affiliate_url",
+      label: "Link de afiliado",
+      required: true,
+      help: "Deve começar por https://",
+    },
+    {
+      name: "image_url",
+      label: "Imagem (URL)",
+      help: "Opcional; o upload abaixo substitui este endereço.",
+    },
+    {
+      name: "image_file",
+      label: "Carregar imagem",
+      type: "file",
+      help: "JPG, PNG ou WebP até 5 MB.",
+    },
     { name: "coupon_code", label: "Código de cupão" },
     { name: "description", label: "Descrição", type: "textarea" },
     { name: "is_active", label: "Ativo", type: "switch" },
@@ -70,11 +89,13 @@ function AdminProdutos() {
         }
         const extension = imageFile.name.split(".").pop()?.toLowerCase() ?? "jpg";
         const path = `products/${crypto.randomUUID()}.${extension}`;
-        const { error: uploadError } = await supabase.storage.from("product-images").upload(path, imageFile, {
-          cacheControl: "31536000",
-          contentType: imageFile.type,
-          upsert: false,
-        });
+        const { error: uploadError } = await supabase.storage
+          .from("product-images")
+          .upload(path, imageFile, {
+            cacheControl: "31536000",
+            contentType: imageFile.type,
+            upsert: false,
+          });
         if (uploadError) throw uploadError;
         const { data } = supabase.storage.from("product-images").getPublicUrl(path);
         payload.image_url = data.publicUrl;
@@ -134,11 +155,14 @@ function AdminProdutos() {
               <div className="min-w-0">
                 <div className="flex flex-wrap items-center gap-2">
                   <h2 className="truncate text-base font-semibold">{p.title}</h2>
-                  {p.is_featured ? <Badge className="bg-accent text-accent-foreground">Destaque</Badge> : null}
+                  {p.is_featured ? (
+                    <Badge className="bg-accent text-accent-foreground">Destaque</Badge>
+                  ) : null}
                   {!p.is_active ? <Badge variant="secondary">Inativo</Badge> : null}
                 </div>
                 <p className="mt-1 text-sm text-muted-foreground">
-                  {formatPrice(Number(p.price), p.currency)} · {p.stores?.name ?? "Sem loja"} · /{p.slug}
+                  {formatPrice(Number(p.price), p.currency)} · {p.stores?.name ?? "Sem loja"} · /
+                  {p.slug}
                 </p>
               </div>
               <div className="flex gap-2">

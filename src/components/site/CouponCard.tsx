@@ -43,7 +43,9 @@ export function CouponCard({ coupon }: { coupon: CouponWithStore }) {
           <h3 className="mt-1 text-base font-semibold">{coupon.title}</h3>
         </div>
         {coupon.discount_label ? (
-          <Badge className="shrink-0 bg-accent text-accent-foreground">{coupon.discount_label}</Badge>
+          <Badge className="shrink-0 bg-accent text-accent-foreground">
+            {coupon.discount_label}
+          </Badge>
         ) : null}
       </div>
 

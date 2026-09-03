@@ -31,7 +31,11 @@ function AdminSettings() {
 
   useEffect(() => {
     if (settings.data) {
-      setValues(Object.fromEntries(settings.data.map((setting) => [setting.key, settingText(setting.value)])));
+      setValues(
+        Object.fromEntries(
+          settings.data.map((setting) => [setting.key, settingText(setting.value)]),
+        ),
+      );
     }
   }, [settings.data]);
 
@@ -44,24 +48,45 @@ function AdminSettings() {
       await qc.invalidateQueries({ queryKey: ["site_settings"] });
       await qc.invalidateQueries({ queryKey: ["admin", "settings"] });
     },
-    onError: (error) => toast.error(error instanceof Error ? error.message : "Não foi possível guardar"),
+    onError: (error) =>
+      toast.error(error instanceof Error ? error.message : "Não foi possível guardar"),
   });
 
   return (
-    <AdminShell title="Configurações" description="Edite os valores públicos do site."
-    >
-      {settings.isPending ? <LoadingBlock /> : settings.isError ? <ErrorState onRetry={() => void settings.refetch()} /> : settings.data?.length === 0 ? (
-        <EmptyState title="Sem configurações" description="Não existem configurações disponíveis." />
+    <AdminShell title="Configurações" description="Edite os valores públicos do site.">
+      {settings.isPending ? (
+        <LoadingBlock />
+      ) : settings.isError ? (
+        <ErrorState onRetry={() => void settings.refetch()} />
+      ) : settings.data?.length === 0 ? (
+        <EmptyState
+          title="Sem configurações"
+          description="Não existem configurações disponíveis."
+        />
       ) : (
-        <form className="max-w-2xl space-y-5" onSubmit={(event) => { event.preventDefault(); save.mutate(); }}>
+        <form
+          className="max-w-2xl space-y-5"
+          onSubmit={(event) => {
+            event.preventDefault();
+            save.mutate();
+          }}
+        >
           {settings.data?.map((setting) => (
             <div key={setting.key} className="space-y-2">
               <Label htmlFor={`setting-${setting.key}`}>{setting.label || setting.key}</Label>
-              <Input id={`setting-${setting.key}`} value={values[setting.key] ?? ""} onChange={(event) => setValues((current) => ({ ...current, [setting.key]: event.target.value }))} />
+              <Input
+                id={`setting-${setting.key}`}
+                value={values[setting.key] ?? ""}
+                onChange={(event) =>
+                  setValues((current) => ({ ...current, [setting.key]: event.target.value }))
+                }
+              />
               <p className="text-xs text-muted-foreground">Chave: {setting.key}</p>
             </div>
           ))}
-          <Button type="submit" disabled={save.isPending}>{save.isPending ? "A guardar…" : "Guardar alterações"}</Button>
+          <Button type="submit" disabled={save.isPending}>
+            {save.isPending ? "A guardar…" : "Guardar alterações"}
+          </Button>
         </form>
       )}
     </AdminShell>
