@@ -15,7 +15,10 @@ export function ProductCard({
   isFavorite?: boolean;
   onToggleFavorite?: (id: string) => void;
 }) {
-  const off = discountPercent(Number(product.price), product.old_price ? Number(product.old_price) : null);
+  const off = discountPercent(
+    Number(product.price),
+    product.old_price ? Number(product.old_price) : null,
+  );
 
   return (
     <article className="group relative flex flex-col overflow-hidden rounded-2xl border bg-card shadow-soft transition-shadow hover:shadow-lift">
@@ -71,7 +74,9 @@ export function ProductCard({
         </h3>
 
         <div className="mt-auto flex items-end gap-2 pt-2">
-          <span className="font-display text-xl">{formatPrice(Number(product.price), product.currency)}</span>
+          <span className="font-display text-xl">
+            {formatPrice(Number(product.price), product.currency)}
+          </span>
           {product.old_price ? (
             <span className="pb-0.5 text-sm text-muted-foreground line-through">
               {formatPrice(Number(product.old_price), product.currency)}

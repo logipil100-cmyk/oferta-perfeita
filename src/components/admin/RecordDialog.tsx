@@ -17,7 +17,7 @@ import { Textarea } from "@/components/ui/textarea";
 export type Field = {
   name: string;
   label: string;
-  type?: "text" | "number" | "textarea" | "switch" | "select" | "date";
+  type?: "text" | "number" | "textarea" | "switch" | "select" | "date" | "file";
   options?: { value: string; label: string }[];
   required?: boolean;
   placeholder?: string;
@@ -79,7 +79,10 @@ export function RecordDialog({
             const raw = values[f.name];
             if (f.type === "switch") {
               return (
-                <div key={f.name} className="flex items-center justify-between gap-4 rounded-xl border p-3">
+                <div
+                  key={f.name}
+                  className="flex items-center justify-between gap-4 rounded-xl border p-3"
+                >
                   <Label htmlFor={id}>{f.label}</Label>
                   <Switch id={id} checked={!!raw} onCheckedChange={(c) => set(f.name, c)} />
                 </div>
@@ -88,7 +91,15 @@ export function RecordDialog({
             return (
               <div key={f.name} className="grid gap-1.5">
                 <Label htmlFor={id}>{f.label}</Label>
-                {f.type === "textarea" ? (
+                {f.type === "file" ? (
+                  <Input
+                    id={id}
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp"
+                    required={f.required}
+                    onChange={(e) => set(f.name, e.target.files?.[0] ?? null)}
+                  />
+                ) : f.type === "textarea" ? (
                   <Textarea
                     id={id}
                     value={(raw as string) ?? ""}

@@ -30,8 +30,16 @@ function ProductPage() {
   const [targetPrice, setTargetPrice] = useState("");
   const alertMutation = useMutation({
     mutationFn: () => createAlert(user!.id, product.data!.id, Number(targetPrice)),
-    onSuccess: () => { setTargetPrice(""); toast.success("Alerta criado."); },
-    onError: (error: Error) => toast.error(error.message === "invalid-target-price" ? "Indique um preço válido." : "Não foi possível criar o alerta."),
+    onSuccess: () => {
+      setTargetPrice("");
+      toast.success("Alerta criado.");
+    },
+    onError: (error: Error) =>
+      toast.error(
+        error.message === "invalid-target-price"
+          ? "Indique um preço válido."
+          : "Não foi possível criar o alerta.",
+      ),
   });
 
   const product = useQuery({
@@ -50,7 +58,8 @@ function ProductPage() {
   });
 
   if (product.isPending) return <LoadingBlock />;
-  if (product.isError || !product.data) return <ErrorState onRetry={() => void product.refetch()} />;
+  if (product.isError || !product.data)
+    return <ErrorState onRetry={() => void product.refetch()} />;
 
   const p = product.data;
   const off = discountPercent(Number(p.price), p.old_price ? Number(p.old_price) : null);
@@ -59,8 +68,10 @@ function ProductPage() {
   return (
     <div className="container-page py-8">
       <nav className="text-sm text-muted-foreground" aria-label="Navegação estrutural">
-        <Link to="/ofertas" className="hover:text-foreground">Ofertas</Link> <span aria-hidden>/</span>{" "}
-        <span className="text-foreground">{p.title}</span>
+        <Link to="/ofertas" className="hover:text-foreground">
+          Ofertas
+        </Link>{" "}
+        <span aria-hidden>/</span> <span className="text-foreground">{p.title}</span>
       </nav>
 
       <div className="mt-6 grid gap-10 lg:grid-cols-2">
@@ -88,17 +99,26 @@ function ProductPage() {
 
           <div className="mt-5 flex items-center gap-4 rounded-2xl border border-primary/20 bg-primary/5 p-4">
             <div className="flex size-16 shrink-0 flex-col items-center justify-center rounded-xl bg-primary text-primary-foreground">
-              <span className="font-display text-2xl leading-none">{Math.min(99, Math.max(68, 82 + (off ?? 0) / 2))}</span>
+              <span className="font-display text-2xl leading-none">
+                {Math.min(99, Math.max(68, 82 + (off ?? 0) / 2))}
+              </span>
               <span className="text-[10px] uppercase tracking-wider">/100</span>
             </div>
             <div className="min-w-0">
-              <p className="flex items-center gap-2 font-semibold"><ShieldCheck className="size-4 text-primary" aria-hidden /> Oferta Perfeita Score</p>
-              <p className="mt-1 text-sm text-muted-foreground">{off && off >= 15 ? "Excelente oferta" : "Boa oportunidade"} com base no desconto e na loja.</p>
+              <p className="flex items-center gap-2 font-semibold">
+                <ShieldCheck className="size-4 text-primary" aria-hidden /> Oferta Perfeita Score
+              </p>
+              <p className="mt-1 text-sm text-muted-foreground">
+                {off && off >= 15 ? "Excelente oferta" : "Boa oportunidade"} com base no desconto e
+                na loja.
+              </p>
             </div>
           </div>
 
           <div className="mt-5 flex items-baseline gap-3">
-            <span className="font-display text-4xl">{formatPrice(Number(p.price), p.currency)}</span>
+            <span className="font-display text-4xl">
+              {formatPrice(Number(p.price), p.currency)}
+            </span>
             {p.old_price ? (
               <span className="text-lg text-muted-foreground line-through">
                 {formatPrice(Number(p.old_price), p.currency)}
@@ -112,8 +132,24 @@ function ProductPage() {
           ) : null}
 
           <div className="mt-6 grid gap-3 rounded-2xl border bg-secondary/30 p-4 sm:grid-cols-2">
-            <div className="flex items-start gap-3"><TrendingDown className="mt-0.5 size-4 text-primary" aria-hidden /><div><p className="text-sm font-medium">Preço atual</p><p className="text-xs text-muted-foreground">{off ? `${off}% abaixo do preço anterior` : "Preço atualizado pela loja"}</p></div></div>
-            <div className="flex items-start gap-3"><Check className="mt-0.5 size-4 text-primary" aria-hidden /><div><p className="text-sm font-medium">Link verificado</p><p className="text-xs text-muted-foreground">Compra encaminhada para a loja oficial</p></div></div>
+            <div className="flex items-start gap-3">
+              <TrendingDown className="mt-0.5 size-4 text-primary" aria-hidden />
+              <div>
+                <p className="text-sm font-medium">Preço atual</p>
+                <p className="text-xs text-muted-foreground">
+                  {off ? `${off}% abaixo do preço anterior` : "Preço atualizado pela loja"}
+                </p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <Check className="mt-0.5 size-4 text-primary" aria-hidden />
+              <div>
+                <p className="text-sm font-medium">Link verificado</p>
+                <p className="text-xs text-muted-foreground">
+                  Compra encaminhada para a loja oficial
+                </p>
+              </div>
+            </div>
           </div>
 
           <div className="mt-7 flex flex-wrap gap-3">
@@ -126,7 +162,9 @@ function ProductPage() {
             ) : null}
             {canFavorite ? (
               <Button variant="outline" size="lg" onClick={() => toggleFavorite(p.id)}>
-                <Heart className={isFavorite(p.id) ? "mr-1 h-4 w-4 fill-current" : "mr-1 h-4 w-4"} />
+                <Heart
+                  className={isFavorite(p.id) ? "mr-1 h-4 w-4 fill-current" : "mr-1 h-4 w-4"}
+                />
                 {isFavorite(p.id) ? "Guardado" : "Guardar"}
               </Button>
             ) : (
@@ -137,11 +175,32 @@ function ProductPage() {
           </div>
 
           {user ? (
-            <form className="mt-6 rounded-2xl border bg-secondary/40 p-4" onSubmit={(event) => { event.preventDefault(); alertMutation.mutate(); }}>
-              <label htmlFor="target-price" className="text-sm font-semibold">Avisar-me quando chegar a</label>
+            <form
+              className="mt-6 rounded-2xl border bg-secondary/40 p-4"
+              onSubmit={(event) => {
+                event.preventDefault();
+                alertMutation.mutate();
+              }}
+            >
+              <label htmlFor="target-price" className="text-sm font-semibold">
+                Avisar-me quando chegar a
+              </label>
               <div className="mt-3 flex gap-2">
-                <input id="target-price" type="number" min="0.01" step="0.01" required value={targetPrice} onChange={(event) => setTargetPrice(event.target.value)} placeholder={String(Number(p.price).toFixed(2))} className="min-w-0 flex-1 rounded-xl border bg-background px-3 py-2 text-sm" />
-                <Button type="submit" variant="secondary" disabled={alertMutation.isPending}><Bell className="mr-2 size-4" aria-hidden />{alertMutation.isPending ? "A guardar…" : "Criar alerta"}</Button>
+                <input
+                  id="target-price"
+                  type="number"
+                  min="0.01"
+                  step="0.01"
+                  required
+                  value={targetPrice}
+                  onChange={(event) => setTargetPrice(event.target.value)}
+                  placeholder={String(Number(p.price).toFixed(2))}
+                  className="min-w-0 flex-1 rounded-xl border bg-background px-3 py-2 text-sm"
+                />
+                <Button type="submit" variant="secondary" disabled={alertMutation.isPending}>
+                  <Bell className="mr-2 size-4" aria-hidden />
+                  {alertMutation.isPending ? "A guardar…" : "Criar alerta"}
+                </Button>
               </div>
             </form>
           ) : null}

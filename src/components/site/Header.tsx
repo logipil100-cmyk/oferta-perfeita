@@ -37,8 +37,16 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 border-b bg-background/85 backdrop-blur">
       <div className="container-page flex h-16 items-center gap-3">
-        <Link to="/" className="flex items-center gap-2 font-display tracking-tight" aria-label="Ir para o início">
-          <img src="/oferta-perfeita-logo.png" alt="Oferta Perfeita" className="size-11 object-contain" />
+        <Link
+          to="/"
+          className="flex items-center gap-2 font-display tracking-tight"
+          aria-label="Ir para o início"
+        >
+          <img
+            src="/oferta-perfeita-logo.png"
+            alt="Oferta Perfeita"
+            className="size-11 object-contain"
+          />
           <span className="hidden font-semibold tracking-tight sm:inline">{siteName}</span>
         </Link>
 
@@ -55,9 +63,16 @@ export function Header() {
           ))}
         </nav>
 
-        <form onSubmit={submit} className="ml-auto hidden max-w-xs flex-1 items-center lg:flex" role="search">
+        <form
+          onSubmit={submit}
+          className="ml-auto hidden max-w-xs flex-1 items-center lg:flex"
+          role="search"
+        >
           <div className="relative w-full">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" aria-hidden />
+            <Search
+              className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
+              aria-hidden
+            />
             <Input
               value={term}
               onChange={(e) => setTerm(e.target.value)}
@@ -69,7 +84,13 @@ export function Header() {
         </form>
 
         <div className="ml-auto flex items-center gap-1 lg:ml-2">
-          <Button asChild variant="ghost" size="icon" aria-label="Favoritos" className="hidden sm:inline-flex">
+          <Button
+            asChild
+            variant="ghost"
+            size="icon"
+            aria-label="Favoritos"
+            className="hidden sm:inline-flex"
+          >
             <Link to="/favoritos">
               <Heart className="h-5 w-5" />
             </Link>
@@ -143,19 +164,35 @@ export function Header() {
                     {item.label}
                   </Link>
                 ))}
-                <Link to="/favoritos" onClick={() => setOpen(false)} className="rounded-lg px-3 py-2.5 text-sm font-medium hover:bg-secondary">
+                <Link
+                  to="/favoritos"
+                  onClick={() => setOpen(false)}
+                  className="rounded-lg px-3 py-2.5 text-sm font-medium hover:bg-secondary"
+                >
                   Favoritos
                 </Link>
-                <Link to="/alertas" onClick={() => setOpen(false)} className="rounded-lg px-3 py-2.5 text-sm font-medium hover:bg-secondary">
+                <Link
+                  to="/alertas"
+                  onClick={() => setOpen(false)}
+                  className="rounded-lg px-3 py-2.5 text-sm font-medium hover:bg-secondary"
+                >
                   Alertas de preço
                 </Link>
                 {user ? (
                   <>
-                    <Link to="/conta" onClick={() => setOpen(false)} className="rounded-lg px-3 py-2.5 text-sm font-medium hover:bg-secondary">
+                    <Link
+                      to="/conta"
+                      onClick={() => setOpen(false)}
+                      className="rounded-lg px-3 py-2.5 text-sm font-medium hover:bg-secondary"
+                    >
                       A minha conta
                     </Link>
                     {isAdmin ? (
-                      <Link to="/admin" onClick={() => setOpen(false)} className="rounded-lg px-3 py-2.5 text-sm font-medium hover:bg-secondary">
+                      <Link
+                        to="/admin"
+                        onClick={() => setOpen(false)}
+                        className="rounded-lg px-3 py-2.5 text-sm font-medium hover:bg-secondary"
+                      >
                         Administração
                       </Link>
                     ) : null}

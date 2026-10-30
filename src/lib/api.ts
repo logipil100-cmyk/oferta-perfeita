@@ -121,11 +121,7 @@ export async function fetchStores(activeOnly = true) {
 }
 
 export async function fetchStoreBySlug(slug: string) {
-  const { data, error } = await supabase
-    .from("stores")
-    .select("*")
-    .eq("slug", slug)
-    .maybeSingle();
+  const { data, error } = await supabase.from("stores").select("*").eq("slug", slug).maybeSingle();
   if (error) throw error;
   return data;
 }
@@ -171,7 +167,10 @@ export async function fetchFavorites(userId: string) {
 }
 
 export async function fetchFavoriteIds(userId: string) {
-  const { data, error } = await supabase.from("favorites").select("product_id").eq("user_id", userId);
+  const { data, error } = await supabase
+    .from("favorites")
+    .select("product_id")
+    .eq("user_id", userId);
   if (error) throw error;
   return (data ?? []).map((row) => row.product_id);
 }

@@ -8,6 +8,7 @@ import { AdminShell } from "@/components/admin/AdminShell";
 import { RecordDialog, type Field, type RecordValues } from "@/components/admin/RecordDialog";
 import { CardGridSkeleton, EmptyState, ErrorState } from "@/components/site/States";
 import { deleteRow, fetchAdminProducts, saveProduct } from "@/lib/admin";
+import { supabase } from "@/integrations/supabase/client";
 import { fetchCategories, fetchStores } from "@/lib/api";
 import { formatPrice } from "@/lib/format";
 
@@ -32,7 +33,12 @@ function AdminProdutos() {
 
   const fields: Field[] = [
     { name: "title", label: "Título", required: true },
-    { name: "slug", label: "Slug", required: true, help: "Identificador no URL, ex: portatil-14-polegadas" },
+    {
+      name: "slug",
+      label: "Slug",
+      required: true,
+      help: "Identificador no URL, ex: portatil-14-polegadas",
+    },
     { name: "price", label: "Preço", type: "number", required: true },
     { name: "old_price", label: "Preço anterior", type: "number" },
     { name: "currency", label: "Moeda", placeholder: "EUR" },
@@ -48,8 +54,23 @@ function AdminProdutos() {
       type: "select",
       options: (categories.data ?? []).map((c) => ({ value: c.slug, label: c.name })),
     },
-    { name: "affiliate_url", label: "Link de afiliado", required: true, help: "Deve começar por https://" },
-    { name: "image_url", label: "Imagem (URL)" },
+    {
+      name: "affiliate_url",
+      label: "Link de afiliado",
+      required: true,
+      help: "Deve começar por https://",
+    },
+    {
+      name: "image_url",
+      label: "Imagem (URL)",
+      help: "Opcional; o upload abaixo substitui este endereço.",
+    },
+    {
+      name: "image_file",
+      label: "Carregar imagem",
+      type: "file",
+      help: "JPG, PNG ou WebP até 5 MB.",
+    },
     { name: "coupon_code", label: "Código de cupão" },
     { name: "description", label: "Descrição", type: "textarea" },
     { name: "is_active", label: "Ativo", type: "switch" },
@@ -58,7 +79,28 @@ function AdminProdutos() {
 
   const save = async (values: RecordValues) => {
     try {
-      await saveProduct(values as never);
+      const imageFile = values.image_file;
+      const payload = { ...values };
+      delete payload.image_file;
+      if (imageFile instanceof File) {
+        if (imageFile.size > 5 * 1024 * 1024) throw new Error("A imagem não pode exceder 5 MB.");
+        if (!["image/jpeg", "image/png", "image/webp"].includes(imageFile.type)) {
+          throw new Error("Formato de imagem não suportado.");
+        }
+        const extension = imageFile.name.split(".").pop()?.toLowerCase() ?? "jpg";
+        const path = `products/${crypto.randomUUID()}.${extension}`;
+        const { error: uploadError } = await supabase.storage
+          .from("product-images")
+          .upload(path, imageFile, {
+            cacheControl: "31536000",
+            contentType: imageFile.type,
+            upsert: false,
+          });
+        if (uploadError) throw uploadError;
+        const { data } = supabase.storage.from("product-images").getPublicUrl(path);
+        payload.image_url = data.publicUrl;
+      }
+      await saveProduct(payload as never);
       toast.success("Produto guardado");
       await qc.invalidateQueries({ queryKey: ["admin", "products"] });
       await qc.invalidateQueries({ queryKey: ["products"] });
@@ -113,11 +155,14 @@ function AdminProdutos() {
               <div className="min-w-0">
                 <div className="flex flex-wrap items-center gap-2">
                   <h2 className="truncate text-base font-semibold">{p.title}</h2>
-                  {p.is_featured ? <Badge className="bg-accent text-accent-foreground">Destaque</Badge> : null}
+                  {p.is_featured ? (
+                    <Badge className="bg-accent text-accent-foreground">Destaque</Badge>
+                  ) : null}
                   {!p.is_active ? <Badge variant="secondary">Inativo</Badge> : null}
                 </div>
                 <p className="mt-1 text-sm text-muted-foreground">
-                  {formatPrice(Number(p.price), p.currency)} · {p.stores?.name ?? "Sem loja"} · /{p.slug}
+                  {formatPrice(Number(p.price), p.currency)} · {p.stores?.name ?? "Sem loja"} · /
+                  {p.slug}
                 </p>
               </div>
               <div className="flex gap-2">

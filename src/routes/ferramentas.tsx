@@ -8,7 +8,10 @@ export const Route = createFileRoute("/ferramentas")({
   head: () => ({
     meta: [
       { title: "Ferramentas — OfertaPerfeita" },
-      { name: "description", content: "Conversor de moeda e simulador de poupança para as suas compras online." },
+      {
+        name: "description",
+        content: "Conversor de moeda e simulador de poupança para as suas compras online.",
+      },
       { property: "og:title", content: "Ferramentas — OfertaPerfeita" },
       { property: "og:description", content: "Conversor de moeda e simulador de poupança." },
     ],
@@ -31,16 +34,28 @@ function ToolsPage() {
       <section className="mt-8 rounded-2xl border bg-card p-6 shadow-soft">
         <h2 className="text-xl">Conversor de moeda</h2>
         <p className="mt-1 text-sm text-muted-foreground">
-          Introduza a taxa de câmbio atual da sua fonte de confiança — não usamos cotações automáticas.
+          Introduza a taxa de câmbio atual da sua fonte de confiança — não usamos cotações
+          automáticas.
         </p>
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
           <div className="space-y-2">
             <Label htmlFor="amount">Valor (EUR)</Label>
-            <Input id="amount" type="number" value={amount} onChange={(e) => setAmount(Number(e.target.value))} />
+            <Input
+              id="amount"
+              type="number"
+              value={amount}
+              onChange={(e) => setAmount(Number(e.target.value))}
+            />
           </div>
           <div className="space-y-2">
             <Label htmlFor="rate">Taxa de câmbio</Label>
-            <Input id="rate" type="number" step="0.0001" value={rate} onChange={(e) => setRate(Number(e.target.value))} />
+            <Input
+              id="rate"
+              type="number"
+              step="0.0001"
+              value={rate}
+              onChange={(e) => setRate(Number(e.target.value))}
+            />
           </div>
         </div>
         <p className="mt-4 font-display text-2xl">{(amount * rate).toFixed(2)}</p>
@@ -51,11 +66,21 @@ function ToolsPage() {
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
           <div className="space-y-2">
             <Label htmlFor="price">Preço original (€)</Label>
-            <Input id="price" type="number" value={price} onChange={(e) => setPrice(Number(e.target.value))} />
+            <Input
+              id="price"
+              type="number"
+              value={price}
+              onChange={(e) => setPrice(Number(e.target.value))}
+            />
           </div>
           <div className="space-y-2">
             <Label htmlFor="discount">Desconto (%)</Label>
-            <Input id="discount" type="number" value={discount} onChange={(e) => setDiscount(Number(e.target.value))} />
+            <Input
+              id="discount"
+              type="number"
+              value={discount}
+              onChange={(e) => setDiscount(Number(e.target.value))}
+            />
           </div>
         </div>
         <p className="mt-4 text-sm text-muted-foreground">

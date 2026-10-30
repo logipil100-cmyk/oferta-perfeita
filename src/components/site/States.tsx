@@ -39,7 +39,9 @@ export function EmptyState({
     <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed bg-card/50 px-6 py-16 text-center">
       <Inbox className="mb-3 h-8 w-8 text-muted-foreground" aria-hidden />
       <h3 className="text-lg font-semibold">{title}</h3>
-      {description ? <p className="mt-1 max-w-md text-sm text-muted-foreground">{description}</p> : null}
+      {description ? (
+        <p className="mt-1 max-w-md text-sm text-muted-foreground">{description}</p>
+      ) : null}
       {action ? <div className="mt-5">{action}</div> : null}
     </div>
   );

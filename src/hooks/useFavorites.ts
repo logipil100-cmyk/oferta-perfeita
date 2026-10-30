@@ -27,7 +27,9 @@ export function useFavorites() {
         if (error) throw error;
         return "removed" as const;
       }
-      const { error } = await supabase.from("favorites").insert({ user_id: user.id, product_id: productId });
+      const { error } = await supabase
+        .from("favorites")
+        .insert({ user_id: user.id, product_id: productId });
       if (error) throw error;
       return "added" as const;
     },
@@ -37,7 +39,11 @@ export function useFavorites() {
       toast.success(result === "added" ? "Guardado nos favoritos" : "Removido dos favoritos");
     },
     onError: (error: Error) => {
-      toast.error(error.message === "auth" ? "Inicie sessão para guardar favoritos." : "Não foi possível atualizar os favoritos.");
+      toast.error(
+        error.message === "auth"
+          ? "Inicie sessão para guardar favoritos."
+          : "Não foi possível atualizar os favoritos.",
+      );
     },
   });
 

@@ -104,7 +104,9 @@ function AdminCupoes() {
               <div className="min-w-0">
                 <div className="flex flex-wrap items-center gap-2">
                   <h2 className="truncate text-base font-semibold">{c.title}</h2>
-                  <Badge variant="secondary" className="font-mono">{c.code}</Badge>
+                  <Badge variant="secondary" className="font-mono">
+                    {c.code}
+                  </Badge>
                   {!c.is_active ? <Badge variant="secondary">Inativo</Badge> : null}
                 </div>
                 <p className="mt-1 text-sm text-muted-foreground">

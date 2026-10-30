@@ -60,7 +60,8 @@ export const Route = createFileRoute("/ofertas/")({
       { title: "Ofertas — OfertaPerfeita" },
       {
         name: "description",
-        content: "Pesquise e filtre ofertas por categoria, loja, preço e desconto no OfertaPerfeita.",
+        content:
+          "Pesquise e filtre ofertas por categoria, loja, preço e desconto no OfertaPerfeita.",
       },
       { property: "og:title", content: "Ofertas — OfertaPerfeita" },
       { property: "og:description", content: "Todas as ofertas curadas, com filtros e ordenação." },
@@ -102,7 +103,8 @@ function OffersPage() {
         const next = { ...prev, ...patch, pagina: patch.pagina ?? 1 } as OffersSearch;
         (Object.keys(next) as (keyof OffersSearch)[]).forEach((k) => {
           const v = next[k];
-          if (v === undefined || v === "" || v === false || (k === "pagina" && v === 1)) delete next[k];
+          if (v === undefined || v === "" || v === false || (k === "pagina" && v === 1))
+            delete next[k];
         });
         return next;
       },
@@ -114,9 +116,13 @@ function OffersPage() {
   const total = offers.data?.total ?? 0;
   const page = search.pagina ?? 1;
   const pages = Math.max(1, Math.ceil(total / PAGE_SIZE));
-  const activeFilters = [search.categoria, search.loja, search.min, search.max, search.cupao].filter(
-    (v) => v !== undefined && v !== false,
-  ).length;
+  const activeFilters = [
+    search.categoria,
+    search.loja,
+    search.min,
+    search.max,
+    search.cupao,
+  ].filter((v) => v !== undefined && v !== false).length;
 
   const filters = (
     <div className="space-y-6">
@@ -126,11 +132,15 @@ function OffersPage() {
           value={search.categoria ?? "todas"}
           onValueChange={(v) => update({ categoria: v === "todas" ? undefined : v })}
         >
-          <SelectTrigger id="f-cat"><SelectValue placeholder="Todas" /></SelectTrigger>
+          <SelectTrigger id="f-cat">
+            <SelectValue placeholder="Todas" />
+          </SelectTrigger>
           <SelectContent>
             <SelectItem value="todas">Todas</SelectItem>
             {(categories.data ?? []).map((c) => (
-              <SelectItem key={c.slug} value={c.slug}>{c.name}</SelectItem>
+              <SelectItem key={c.slug} value={c.slug}>
+                {c.name}
+              </SelectItem>
             ))}
           </SelectContent>
         </Select>
@@ -142,11 +152,15 @@ function OffersPage() {
           value={search.loja ?? "todas"}
           onValueChange={(v) => update({ loja: v === "todas" ? undefined : v })}
         >
-          <SelectTrigger id="f-loja"><SelectValue placeholder="Todas" /></SelectTrigger>
+          <SelectTrigger id="f-loja">
+            <SelectValue placeholder="Todas" />
+          </SelectTrigger>
           <SelectContent>
             <SelectItem value="todas">Todas</SelectItem>
             {(stores.data ?? []).map((s) => (
-              <SelectItem key={s.id} value={s.id}>{s.name}</SelectItem>
+              <SelectItem key={s.id} value={s.id}>
+                {s.name}
+              </SelectItem>
             ))}
           </SelectContent>
         </Select>
@@ -178,7 +192,9 @@ function OffersPage() {
       </div>
 
       <div className="flex items-center justify-between rounded-xl border p-3">
-        <Label htmlFor="f-cupao" className="cursor-pointer">Apenas com cupão</Label>
+        <Label htmlFor="f-cupao" className="cursor-pointer">
+          Apenas com cupão
+        </Label>
         <Switch
           id="f-cupao"
           checked={!!search.cupao}
@@ -210,7 +226,10 @@ function OffersPage() {
         role="search"
       >
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" aria-hidden />
+          <Search
+            className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
+            aria-hidden
+          />
           <Input
             value={term}
             onChange={(e) => setTerm(e.target.value)}
@@ -230,18 +249,23 @@ function OffersPage() {
             </SelectTrigger>
             <SelectContent>
               {Object.entries(ORDER_LABELS).map(([v, l]) => (
-                <SelectItem key={v} value={v}>{l}</SelectItem>
+                <SelectItem key={v} value={v}>
+                  {l}
+                </SelectItem>
               ))}
             </SelectContent>
           </Select>
           <Sheet>
             <SheetTrigger asChild>
               <Button variant="outline" className="lg:hidden">
-                <Filter className="mr-1 h-4 w-4" /> Filtros{activeFilters ? ` (${activeFilters})` : ""}
+                <Filter className="mr-1 h-4 w-4" /> Filtros
+                {activeFilters ? ` (${activeFilters})` : ""}
               </Button>
             </SheetTrigger>
             <SheetContent side="left" className="w-[85vw] overflow-y-auto sm:w-96">
-              <SheetHeader><SheetTitle>Filtros</SheetTitle></SheetHeader>
+              <SheetHeader>
+                <SheetTitle>Filtros</SheetTitle>
+              </SheetHeader>
               <div className="p-4">{filters}</div>
             </SheetContent>
           </Sheet>
@@ -262,7 +286,11 @@ function OffersPage() {
             <EmptyState
               title="Nenhuma oferta corresponde aos filtros"
               description="Experimente alargar o intervalo de preço ou limpar os filtros."
-              action={<Button variant="outline" onClick={clear}>Limpar filtros</Button>}
+              action={
+                <Button variant="outline" onClick={clear}>
+                  Limpar filtros
+                </Button>
+              }
             />
           ) : (
             <>
